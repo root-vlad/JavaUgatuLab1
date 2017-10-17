@@ -5,7 +5,7 @@ import java.util.List;
  * Created by vgorokhov on 12.10.2017.
  */
 public class Container extends Item {
-    private Integer maxSize;
+    protected Integer maxSize;
     protected Integer countItemInContainer = 0;
     private List<Item> listItemInContainer = new ArrayList<Item>();
 

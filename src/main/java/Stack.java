@@ -1,12 +1,20 @@
 /**
  * Created by vgorokhov on 12.10.2017.
  */
-public class Stack extends Item {
-    Stack(String name, Integer weight, String property) {
-        super(name, weight, property);
+public class Stack extends Container  {
+
+    Stack( Integer maxSize, String property) {
+        super("Стопка", maxSize, property);
     }
 
-    Stack(String name, String property) {
-        super(name, property);
+    Stack( Integer maxSize) {
+        super("Стопка", maxSize, "плоский");
     }
+
+    public Item pullItemOnStack(){
+        return this.pullOfContainerOnIndex(getCountItemInContainer() - 1);
+    }
+
+
+
 }

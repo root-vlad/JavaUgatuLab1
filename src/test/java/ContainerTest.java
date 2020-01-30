@@ -1,5 +1,10 @@
+import io.qameta.allure.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 
@@ -75,15 +80,33 @@ public class ContainerTest {
     }
 
     @Test
-    public void equalsTwoContainers(){
-        assertEquals(2, container1.getCountItemInContainer().intValue());
-        assertEquals(3, box.getCountItemInContainer().intValue());
+    @Description(value = "Тест проверяет контейнеры")
+    public void equalsTwoContainers() throws IOException {
+        testCount();
+        testWeight();
+        testMaxSize(container1, box);
+    }
 
+    @Step("Проверяем количество предметов в контейнерах")
+    public void testCount(){
+        //2 вместо 1
+        assertEquals("Количество предметов в контейнере не соответвует ожидаемому", 2, container1.getCountItemInContainer().intValue());
+        assertEquals(3, box.getCountItemInContainer().intValue());
+        addLinkSber();
+    }
+
+    @Step("Проверяем вес контейнеров {container.name} и  {container2.name}")
+    public void testMaxSize(Container container, Container container2) throws IOException {
+        assertEquals(15, container.maxSize.intValue());
+        assertEquals(15, container2.maxSize.intValue());
+        getBytes("Drow_Ranger_icon.png");
+    }
+
+    @Step("Проверяем максимальный размер контейнеров")
+    public void testWeight() throws IOException{
         assertEquals(12, box.getWeight().intValue());
         assertEquals(7, container1.getWeight().intValue());
-
-        assertEquals(15, container1.maxSize.intValue());
-        assertEquals(15, box.maxSize.intValue());
+        getBytes("test.txt");
     }
 
     @Test
@@ -96,8 +119,21 @@ public class ContainerTest {
         assertEquals(1, container1.getWeight().intValue());
     }
 
+    @Attachment(value = "Вложение", type = "png", fileExtension = ".png")
+//    @Attachment(value = "Вложение", type = "application/json", fileExtension = ".txt")
+//    @Attachment
+    public static byte[] getBytes(String resourceName) throws IOException {
+        return Files.readAllBytes(Paths.get("E:////Загрузки/", resourceName));
+    }
 
-    @Test
+    @Step("Добавить ссылку на Сбербанк")
+    public static void addLinkSber() {
+        String link = "http://sberbank.ru";
+        Allure.addAttachment("Результат", "text/plain", link);
+    }
+
+
+    @Test()
     public void pullOfContainerOnName(){
         try {
             assertEquals(apple1, box.pullOfContainerOnName("Apple"));
@@ -130,7 +166,8 @@ public class ContainerTest {
         assertEquals(2, box.getCountItemInContainer().intValue());
     }
 
-    @Test(expected = ItemAlreadyPlacedException.class)
+    @Flaky
+    @Test//(expected = ItemAlreadyPlacedException.class)
     public void testItemAlreadyPlacedException() throws ItemStoreException, ItemAlreadyPlacedException {
             box.putOnContainer(stack);
             box.putOnContainer(stack);
@@ -197,6 +234,5 @@ public class ContainerTest {
             e.printStackTrace();
         }
         stack.putOnContainer(iphone2);
-
     }
 }

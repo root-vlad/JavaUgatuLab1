@@ -64,6 +64,10 @@ public abstract class Container extends Item {
         return weightContainer;
     }
 
+    public List<Item> getListItemInContainer() {
+        return listItemInContainer;
+    }
+
     protected void addListItemInContainer(Item item){
         listItemInContainer.add(item);
     }

@@ -10,7 +10,7 @@ public class Bag extends Container {
         super("Мешок", maxSize, property);
     }
 
-    protected Item pullOfContainerOnName(String name) throws ListItemException{
+    protected Item pullOfContainerOnName(String name) throws ListItemException {
         Integer index = super.searchItemOnName(name);
         if (index == null) throw new ListItemException("Предмета с таким названиеим нет", name);
         return pullOfContainerOnIndex(index);

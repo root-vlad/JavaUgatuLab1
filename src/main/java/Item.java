@@ -17,6 +17,10 @@ public class Item {
     private boolean itemInContainer = false;
     private String name;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Integer getWeight() {
         return weight;
     }
